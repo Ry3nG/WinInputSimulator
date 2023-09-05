@@ -7,7 +7,10 @@ WinInputSimulator::WinInputSimulator(const std::wstring& title)
 	window = nullptr;
 }
 
-bool WinInputSimulator::activate() {
+bool WinInputSimulator::activate(bool testing) {
+	if(testing) {
+		return true; // this is to mock the window
+	}
 	window = FindWindowW(NULL, windowTitle.c_str());
 	if (window == nullptr) {
 		return false;
@@ -16,9 +19,9 @@ bool WinInputSimulator::activate() {
 	return true;
 }
 
-bool WinInputSimulator::press_key(WORD key)
+bool WinInputSimulator::press_key(WORD key, bool testing)
 {
-	if (!activate()) {
+	if (!activate(testing)) {
 		return false;
 	}
 
@@ -29,9 +32,9 @@ bool WinInputSimulator::press_key(WORD key)
 	return true;
 }
 
-bool WinInputSimulator::move_cursor(int x, int y)
+bool WinInputSimulator::move_cursor(int x, int y, bool testing)
 {
-	if (!activate()) {
+	if (!activate(testing)) {
 		return false;
 	}
 
@@ -44,9 +47,9 @@ bool WinInputSimulator::move_cursor(int x, int y)
 	return true;
 }
 
-bool WinInputSimulator::left_click()
+bool WinInputSimulator::left_click(bool testing)
 {
-	if (!activate()) {
+	if (!activate(testing)) {
 		return false;
 	}
 
@@ -58,10 +61,9 @@ bool WinInputSimulator::left_click()
 
 }
 
-#include "pch.h"
-bool WinInputSimulator::right_click()
+bool WinInputSimulator::right_click(bool testing)
 {
-	if (!activate()) {
+	if (!activate(testing)) {
 		return false;
 	}
 
@@ -72,9 +74,9 @@ bool WinInputSimulator::right_click()
 	return true;
 }
 
-bool WinInputSimulator::scroll(int delta)
+bool WinInputSimulator::scroll(int delta, bool testing )
 {
-	if (!activate()) {
+	if (!activate(testing)) {
 		return false;
 	}
 
