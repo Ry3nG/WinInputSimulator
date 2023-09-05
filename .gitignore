@@ -38,6 +38,6 @@ build/
 *.nupkg
 
 # Uncomment if necessary
-*.sln
+.sln
 *.vcxproj
 *.vcxproj.filters
