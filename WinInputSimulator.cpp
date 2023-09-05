@@ -58,6 +58,7 @@ bool WinInputSimulator::left_click()
 
 }
 
+#include "pch.h"
 bool WinInputSimulator::right_click()
 {
 	if (!activate()) {
