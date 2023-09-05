@@ -16,25 +16,6 @@ bool WinInputSimulator::activate() {
 	return true;
 }
 
-bool WinInputSimulator::move_and_click(int x, int y)
-{
-	if (!activate()) {
-		return false;
-	}
-
-	POINT pt;
-	pt.x = x;
-	pt.y = y;
-	ClientToScreen(window, &pt);
-	SetCursorPos(pt.x, pt.y);
-	std::this_thread::sleep_for(delay_between_operations);
-	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-	std::this_thread::sleep_for(delay_between_operations);
-	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-	std::this_thread::sleep_for(delay_between_operations);
-	return true;
-}
-
 bool WinInputSimulator::press_key(WORD key)
 {
 	if (!activate()) {
@@ -47,3 +28,57 @@ bool WinInputSimulator::press_key(WORD key)
 	std::this_thread::sleep_for(delay_between_operations);
 	return true;
 }
+
+bool WinInputSimulator::move_cursor(int x, int y)
+{
+	if (!activate()) {
+		return false;
+	}
+
+	POINT pt;
+	GetCursorPos(&pt);
+	pt.x += x;
+	pt.y += y;
+	SetCursorPos(pt.x, pt.y);
+	std::this_thread::sleep_for(delay_between_operations);
+	return true;
+}
+
+bool WinInputSimulator::left_click()
+{
+	if (!activate()) {
+		return false;
+	}
+
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+	std::this_thread::sleep_for(delay_between_operations);
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+	std::this_thread::sleep_for(delay_between_operations);
+	return true;
+
+}
+
+bool WinInputSimulator::right_click()
+{
+	if (!activate()) {
+		return false;
+	}
+
+	mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+	std::this_thread::sleep_for(delay_between_operations);
+	mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+	std::this_thread::sleep_for(delay_between_operations);
+	return true;
+}
+
+bool WinInputSimulator::scroll(int delta)
+{
+	if (!activate()) {
+		return false;
+	}
+
+	mouse_event(MOUSEEVENTF_WHEEL, 0, 0, delta, 0);
+	std::this_thread::sleep_for(delay_between_operations);
+	return true;
+}
+

@@ -11,6 +11,10 @@ public:
 	bool activate();
 	bool move_and_click(int x, int y);
 	bool press_key(WORD key);
+	bool move_cursor(int x, int y);
+	bool left_click();
+	bool right_click();
+	bool scroll(int amount);
 
 private:
 	HWND window;
