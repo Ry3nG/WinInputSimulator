@@ -1,0 +1,33 @@
+name: Build and Test C++ DLL
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs_on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Build C++ Project
+    - name: Build with MSBuild
+      run: msbuild MyDLL.sln /p:Configuration=Release
+
+    # Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    # Install any Python dependencies here
+    - name: Install Python dependencies
+      run: pip install -r requirements.txt
+
+    # Run Python mock tests
+    - name: Run Python mock tests
+      run: python ./mock_test.py
