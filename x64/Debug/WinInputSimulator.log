@@ -1,4 +1,0 @@
-﻿  MyDLL.cpp
-x64\Debug\WinInputSimulator.obj : warning LNK4042: object specified more than once; extras ignored
-     Creating library C:\Users\Gong Zerui\Desktop\WinInputSimulator\x64\Debug\WinInputSimulator.lib and object C:\Users\Gong Zerui\Desktop\WinInputSimulator\x64\Debug\WinInputSimulator.exp
-  WinInputSimulator.vcxproj -> C:\Users\Gong Zerui\Desktop\WinInputSimulator\x64\Debug\WinInputSimulator.dll
