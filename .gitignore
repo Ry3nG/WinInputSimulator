@@ -39,5 +39,5 @@ build/
 
 # Uncomment if necessary
 .sln
-*.vcxproj
-*.vcxproj.filters
+.vcxproj
+.vcxproj.filters
