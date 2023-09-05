@@ -3,51 +3,56 @@
 
 extern "C" {
 
-    __declspec(dllexport) bool PressKey(const wchar_t* title, WORD key, bool testing) {
-        WinInputSimulator controller = WinInputSimulator(std::wstring(title));
-
-        if (!controller.activate(testing)) {
-            return false;
-        }
-
-        return controller.press_key(key,testing);
-    }
-
-    __declspec(dllexport) bool MoveCursor(const wchar_t* title, int x, int y, bool testing) {
+	__declspec(dllexport) ErrorCode Activate(const wchar_t* title, bool testing) {
 		WinInputSimulator controller = WinInputSimulator(std::wstring(title));
-
-		if (!controller.activate(testing)) {
-			return false;
-		}
-
-		return controller.move_cursor(x, y,testing);
+		return controller.activate(testing);
 	}
 
-    __declspec(dllexport) bool LeftClick(const wchar_t* title, bool testing ) {
+	__declspec(dllexport) ErrorCode PressKey(const wchar_t* title, WORD key, bool testing) {
 		WinInputSimulator controller = WinInputSimulator(std::wstring(title));
 
-		if (!controller.activate(testing)) {
-			return false;
+		if (controller.activate(testing) != ErrorCode::SUCCESS) {
+			return ErrorCode::FAILED_TO_PRESS_KEY;
+		}
+
+		return controller.press_key(key, testing);
+	}
+
+	__declspec(dllexport) ErrorCode MoveCursor(const wchar_t* title, int x, int y, bool testing) {
+		WinInputSimulator controller = WinInputSimulator(std::wstring(title));
+
+		if (controller.activate(testing) != ErrorCode::SUCCESS) {
+			return ErrorCode::FAILED_TO_MOVE_CURSOR;
+		}
+
+		return controller.move_cursor(x, y, testing);
+	}
+
+	__declspec(dllexport) ErrorCode LeftClick(const wchar_t* title, bool testing) {
+		WinInputSimulator controller = WinInputSimulator(std::wstring(title));
+
+		if (controller.activate(testing) != ErrorCode::SUCCESS) {
+			return ErrorCode::FAILED_TO_LEFT_CLICK;
 		}
 
 		return controller.left_click(testing);
 	}
 
-	__declspec(dllexport) bool RightClick(const wchar_t* title, bool testing) {
+	__declspec(dllexport) ErrorCode RightClick(const wchar_t* title, bool testing) {
 		WinInputSimulator controller = WinInputSimulator(std::wstring(title));
 
-		if (!controller.activate(testing)) {
-			return false;
+		if (controller.activate(testing) != ErrorCode::SUCCESS) {
+			return ErrorCode::FAILED_TO_RIGHT_CLICK;
 		}
 		return controller.right_click(testing);
 	}
 
-	__declspec(dllexport) bool Scroll(const wchar_t* title, int amount, bool testing) {
+	__declspec(dllexport) ErrorCode Scroll(const wchar_t* title, int amount, bool testing) {
 		WinInputSimulator controller = WinInputSimulator(std::wstring(title));
 
-		if (!controller.activate(testing)) {
-			return false;
+		if (controller.activate(testing) != ErrorCode::SUCCESS) {
+			return ErrorCode::FAILED_TO_SCROLL;
 		}
-		return controller.scroll(amount,testing);
+		return controller.scroll(amount, testing);
 	}
 }
