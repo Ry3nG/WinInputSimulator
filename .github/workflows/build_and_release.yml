@@ -7,44 +7,44 @@ on:
 
 jobs:
   build:
-    runs_on: windows-latest
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      # Setup MSBuild
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+    # Setup MSBuild
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
 
-      # Build C++ Project
-      - name: Build with MSBuild
-        run: msbuild WinInputSimulator.sln /p:Configuration=Release
+    # Build C++ Project
+    - name: Build with MSBuild
+      run: msbuild WinInputSimulator.sln /p:Configuration=Release
 
-      # Upload the built DLL as an artifact
-      - name: Upload DLL
-        uses: actions/upload-artifact@v2
-        with:
-          name: WinInputSimulator_dll
-          path: ./x64/Release/WinInputSimulator.dll
+    # Upload the built DLL as an artifact
+    - name: Upload DLL
+      uses: actions/upload-artifact@v2
+      with:
+        name: WinInputSimulator_dll
+        path: ./x64/Release/WinInputSimulator.dll
 
   release:
     needs: build
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Download DLL
-        uses: actions/download-artifact@v2
-        with:
-          name: WinInputSimulator_dll
+    - name: Download DLL
+      uses: actions/download-artifact@v2
+      with:
+        name: WinInputSimulator_dll
 
-      # Create GitHub release and upload the DLL
-      - name: Create Release and Upload DLL
-        uses: gh-actions/github-release@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: 'This release includes updates and improvements to the WinInputSimulator DLL. See the changelog for more details.'
-          draft: false
-          prerelease: false
-          files: ./WinInputSimulator_dll/WinInputSimulator.dll
+    # Create GitHub release and upload the DLL
+    - name: Create Release and Upload DLL
+      uses: gh-actions/github-release@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: 'This release includes updates and improvements to the WinInputSimulator DLL. See the changelog for more details.'
+        draft: false
+        prerelease: false
+        files: ./WinInputSimulator_dll/WinInputSimulator.dll
