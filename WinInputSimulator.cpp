@@ -117,3 +117,25 @@ ErrorCode WinInputSimulator::scroll(int delta, bool testing)
     std::this_thread::sleep_for(delay_between_operations);
     return ErrorCode::SUCCESS;
 }
+
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+    auto params = reinterpret_cast<std::pair<std::wstring, std::vector<HWND>*>*>(lParam);
+    std::wstring titleSubstring = params->first;
+    std::vector<HWND>* windows = params->second;
+
+    wchar_t title[256];
+    GetWindowText(hwnd, title, sizeof(title) / sizeof(wchar_t));
+    std::wstring windowTitle = title;
+
+    if (windowTitle.find(titleSubstring) != std::wstring::npos) {
+        windows->push_back(hwnd);
+    }
+    return TRUE;
+}
+
+std::vector<HWND> WinInputSimulator::getWindowsWithTitle(const std::wstring& titleSubstring) {
+    std::vector<HWND> matchingWindows;
+    std::pair<std::wstring, std::vector<HWND>*> params = { titleSubstring, &matchingWindows };
+    EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&params));
+    return matchingWindows;
+}
