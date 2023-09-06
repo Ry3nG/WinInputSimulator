@@ -1,0 +1,28 @@
+name: Auto Build DLL and Upload Artifact
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Set up MSBuild
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      # Build C++ Project
+      - name: Build with MSBuild
+        run: msbuild WinInputSimulator.sln /p:Configuration=Release  # Replace with your actual .sln name
+
+      # Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: WinInputSimulator_dll
+          path: ./x64/Release/WinInputSimulator.dll 
