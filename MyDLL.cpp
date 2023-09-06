@@ -55,4 +55,15 @@ extern "C" {
 		}
 		return controller.scroll(amount, testing);
 	}
+	__declspec(dllexport) void GetWindowsWithTitle(const wchar_t* titleSubstring, HWND* outArray, int* outArraySize) {
+		std::vector<HWND> windows = WinInputSimulator::getWindowsWithTitle(std::wstring(titleSubstring));
+		int size = static_cast<int>(windows.size());
+		if (size > *outArraySize) {
+			size = *outArraySize;
+		}
+		for (int i = 0; i < size; ++i) {
+			outArray[i] = windows[i];
+		}
+		*outArraySize = size;
+	}
 }
