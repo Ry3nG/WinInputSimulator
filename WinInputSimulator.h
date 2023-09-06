@@ -5,7 +5,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
-
+#include <vector>
 
 enum class ErrorCode {
 	SUCCESS = 0,
@@ -13,6 +13,7 @@ enum class ErrorCode {
 	FAILED_TO_ACTIVATE = 2,
 	FAILED_TO_PRESS_KEY = 3,
 	FAILED_TO_MOVE_CURSOR = 4,
+	
 	FAILED_TO_LEFT_CLICK = 5,
 	FAILED_TO_RIGHT_CLICK = 6,
 	FAILED_TO_SCROLL = 7,
@@ -33,6 +34,7 @@ public:
 	ErrorCode left_click(bool testing = false);
 	ErrorCode right_click(bool testing = false);
 	ErrorCode scroll(int amount, bool testing = false);
+	static std::vector<HWND> getWindowsWithTitle(const std::wstring& titleSubstring);
 
 private:
 	HWND window;
