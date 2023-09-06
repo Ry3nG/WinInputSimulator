@@ -49,4 +49,4 @@ jobs:
           asset_name: WinInputSimulator.dll  # Replace with your actual DLL name
           asset_content_type: application/x-msdownload
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
