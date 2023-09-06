@@ -10,4 +10,5 @@ extern "C" {
     __declspec(dllexport) ErrorCode LeftClick(const wchar_t* title, bool testing = false);
     __declspec(dllexport) ErrorCode RightClick(const wchar_t* title, bool testing = false);
     __declspec(dllexport) ErrorCode Scroll(const wchar_t* title, int amount, bool testing = false);
+    __declspec(dllexport) void GetWindowsWithTitle(const wchar_t* titleSubstring, HWND* outArray, int* outArraySize);
 }
