@@ -1,4 +1,4 @@
-from ctypes import cdll, c_wchar_p, c_int, c_ushort
+from ctypes import POINTER, c_void_p, cdll, c_wchar_p, c_int, c_ushort
 import time
 
 class WinInputSimulator():
@@ -15,7 +15,6 @@ class WinInputSimulator():
     FAILED_TO_GET_WINDOW_RECT = 9
     FAILED_TO_SET_CURSOR_POS = 10
     UNKNOWN_ERROR = 99
-    # (Add all your other error codes here)
 
     WINDOW_TITLE = "Document - WordPad"  # Target window title
     
@@ -42,15 +41,38 @@ class WinInputSimulator():
         self.left_click.argtypes = [c_wchar_p, c_int]
         self.left_click.restype = c_int
 
+       
+        # Update the function signature
+        self.get_windows_with_title = self.myDLL.GetWindowsWithTitle
+        self.get_windows_with_title.argtypes = [c_wchar_p, POINTER(c_void_p), POINTER(c_int)]
+        self.get_windows_with_title.restype = None
+
+    def get_windows(self, title):
+        # Allocate an array for the window handles
+        max_windows = 10  # Maximum number of windows you expect to find
+        array_type = c_void_p * max_windows  # Create a type for an array of c_void_p
+        window_array = array_type()  # Create an instance of that array type
+
+        # Create a variable to hold the number of windows found
+        num_windows = c_int(max_windows)
+
+        # Call the function
+        self.get_windows_with_title(c_wchar_p(title), window_array, num_windows)
+
+        # Convert the result to a Python list
+        return [window_array[i] for i in range(num_windows.value)]
+    
 # Create an instance of the class
 simulator = WinInputSimulator()
 
 # Test the functions
+
 activation_status = simulator.activate(c_wchar_p(WinInputSimulator.WINDOW_TITLE), c_int(0))
 if activation_status == WinInputSimulator.SUCCESS:
     print("Activated window")
 else:
     print(activation_status)
+
 
 move_status = simulator.move_cursor(c_wchar_p(WinInputSimulator.WINDOW_TITLE), c_int(100), c_int(100), c_int(0))
 if move_status == WinInputSimulator.SUCCESS:
@@ -70,3 +92,6 @@ if press_status == WinInputSimulator.SUCCESS:
     print("Key press successful")
 else:
     print(press_status)
+
+windows = simulator.get_windows(WinInputSimulator.WINDOW_TITLE)
+print("Found windows:", windows)
